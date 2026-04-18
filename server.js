@@ -1,0 +1,46 @@
+const express = require('express');
+
+const app = express();
+
+app.use(express.json())
+
+app.get('/', (req, res) => {
+    res.send("Requisição recebida!");
+});
+
+app.get('/home', (req, res) => {
+    res.send("Home Page");
+});
+
+app.get('/me', (req, res) => {
+    const {nome, bairro} = req.query;
+    res.send(`Meu nome é ${nome}, Moro em ${bairro}`);
+});
+
+app.get('/produtos{/*categoria}{/*produto}', (req, res) => {
+    const {categoria, produto} = req.params;
+
+    if(categoria && produto) {
+        return res.send(`Pagina do produto ${produto}`);
+    }
+
+    if (categoria && !produto) {
+        return res.send(`Todos os produtos da categoria ${categoria}`);
+    }
+
+    return res.send(`Todos os produtos`);
+});
+
+app.post('/login', (req, res) => {
+    const {email, password} = req.body;
+
+    if(email === 'email@mail.com' && password === 'senha123') {
+        return res.send('Usuario logado com sucesso!')
+    }
+
+    return res.send('Login incorreto!');
+});
+
+app.listen(1234, () => {
+    console.log("Servidor iniciado na porta 1234");
+});
